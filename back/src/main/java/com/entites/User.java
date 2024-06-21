@@ -26,6 +26,14 @@ public class User {
 
     }
 
+    public User(int id, String pseudo, String motdepasse, String nom, String prenom, String role) {
+        this.id = id;
+        this.pseudo = pseudo;
+        this.motdepasse = motdepasse;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.role = role;
+    }
     // getters and setters
 
 

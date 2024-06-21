@@ -7,6 +7,7 @@ import com.enums.EnumRole;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.services.DatabaseConnection;
 import com.services.UserService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -15,15 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.stream.Collectors;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-
-    private static final UserService userService = new UserService();
+    private static final UserService userService = new  UserService(new DatabaseConnection());
 
     private static BCrypt passwordService = new BCrypt() ;
 

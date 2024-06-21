@@ -2,10 +2,7 @@ package com.services;
 
 import com.entites.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +14,19 @@ public class UserService {
     private static final String SelectUsersQuery = "SELECT * FROM users";
     private static final String SelectUserQueryByPseudo = "SELECT * FROM users WHERE pseudo = ? ";
 
+    private final Database databaseConnection ;
+
+    public UserService(Database databaseConnection){
+        this.databaseConnection =  databaseConnection;
+    }
+
 
     public void insertUser(User user) {
-        Connection connection = null;
+        Connection connection = null ;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = DatabaseConnection.getConnection();
+            connection =  databaseConnection.getConnection() ;
             preparedStatement = connection.prepareStatement(InsertQuery);
             preparedStatement.setString(1, user.getPseudo());
             preparedStatement.setString(2, user.getNom());
@@ -53,20 +56,22 @@ public class UserService {
 
     public User getUserByUsername(String pseudo) {
         User user = null ;
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        Connection connection = null ;
 
         try {
-            connection = DatabaseConnection.getConnection();
+            connection =  databaseConnection.getConnection() ;
             preparedStatement = connection.prepareStatement(SelectUserQueryByPseudo);
             preparedStatement.setString(1, pseudo);
-            resultSet = preparedStatement.executeQuery();
+             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                String username = resultSet.getString("pseudo");
-                String email = resultSet.getString("motDePasse");
-                user = new User(username, email);
+                int id = resultSet.getInt("id");
+                String motdepasse = resultSet.getString("motDePasse");
+                String nom = resultSet.getString("nom");
+                String prenom = resultSet.getString("prenom");
+                String role = resultSet.getString("role");
+                user = new User(id,pseudo, motdepasse,nom,prenom,role);
             }
 
         } catch (SQLException e) {
@@ -74,9 +79,6 @@ public class UserService {
         } finally {
             // Fermer les ressources ouvertes
             try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
                 if (preparedStatement != null) {
                     preparedStatement.close();
                 }
@@ -98,15 +100,18 @@ public class UserService {
         ResultSet resultSet = null;
 
         try {
-            connection = DatabaseConnection.getConnection();
+            connection = databaseConnection.getConnection()  ;
             preparedStatement = connection.prepareStatement(SelectUsersQuery);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                String username = resultSet.getString("pseudo");
-                String email = resultSet.getString("motDePasse");
-                User user = new User(username, email);
-                userList.add(user);
+                int id = resultSet.getInt("id");
+                String pseudo = resultSet.getString("pseudo");
+                String motdepasse = resultSet.getString("motDePasse");
+                String nom = resultSet.getString("nom");
+                String prenom = resultSet.getString("prenom");
+                String role = resultSet.getString("role");
+                userList.add(new User(id,pseudo, motdepasse,nom,prenom,role));
             }
 
         } catch (SQLException e) {

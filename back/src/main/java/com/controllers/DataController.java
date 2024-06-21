@@ -7,6 +7,7 @@ import com.enums.EnumRole;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.services.DatabaseConnection;
 import com.services.ReservationService;
 import com.services.UserService;
 import com.sun.net.httpserver.HttpExchange;
@@ -19,13 +20,15 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.SQLException;
 
 
 public class DataController {
 
     private static final Logger logger = LoggerFactory.getLogger(DataController.class);
 
-    private static final UserService userService = new UserService();
+    private static final UserService userService = new UserService(new DatabaseConnection());
+
 
     private static final ReservationService reservationService = new ReservationService();
 
