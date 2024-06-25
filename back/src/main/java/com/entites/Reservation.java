@@ -1,25 +1,56 @@
 package com.entites;
 
+import com.utils.Mappeur;
+
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Reservation {
     private int id ;
     private String nom ;
     private String prenom ;
-    private String role ;
-    private String email ;
-    private String numero ;
-    private String information ;
+    private String role="" ;
+    private String email ="" ;
+    private String numero  ;
+    private String information = "";
     private LocalDateTime dateDebutReservation ;
     private LocalDateTime dateFinReservation ;
-    private int nombre ;
-    private List<Integer> tables ;
+
+    private int nombrePersonnes ;
+    private String tables = "" ;
     private LocalDateTime dateReservation ;
 
+    public Reservation(){}
 
 
+    public Reservation(String nom, String prenom, String role ,String email, String numero, String information, LocalDateTime dateDebutReservation, int nombrePersonnes , String tables) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.role = role ;
+        this.email = email;
+        this.numero = numero;
+        this.information = information;
+        this.dateDebutReservation = dateDebutReservation.withSecond(0);
+        this.dateFinReservation = dateDebutReservation.plusHours(2).withSecond(0);
+        this.nombrePersonnes = nombrePersonnes;
+        this.dateReservation = LocalDateTime.now() ;
+        this.tables = tables ;
+    }
 
+    public Reservation(int id, String nom, String prenom, String role, String email, String numero, String information, LocalDateTime dateDebutReservation, LocalDateTime dateFinReservation, int nombrePersonnes, String tables, LocalDateTime dateReservation) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.role = role;
+        this.email = email;
+        this.numero = numero;
+        this.information = information;
+        this.dateDebutReservation = dateDebutReservation;
+        this.dateFinReservation = dateFinReservation;
+        this.nombrePersonnes = nombrePersonnes;
+        this.tables = tables;
+        this.dateReservation = dateReservation;
+    }
 
     //getters and setters
 
@@ -96,19 +127,19 @@ public class Reservation {
         this.dateFinReservation = dateFinReservation;
     }
 
-    public int getNombre() {
-        return nombre;
+    public int getNombrePersonnes() {
+        return nombrePersonnes;
     }
 
-    public void setNombre(int nombre) {
-        this.nombre = nombre;
+    public void setNombrePersonnes(int nombrePersonnes) {
+        this.nombrePersonnes = nombrePersonnes;
     }
 
-    public List<Integer> getTables() {
+    public String getTables() {
         return tables;
     }
 
-    public void setTables(List<Integer> tables) {
+    public void setTables(String tables) {
         this.tables = tables;
     }
 
@@ -132,8 +163,8 @@ public class Reservation {
                 ", information='" + information + '\'' +
                 ", dateDebutReservation=" + dateDebutReservation +
                 ", dateFinReservation=" + dateFinReservation +
-                ", nombre=" + nombre +
-                ", tables=" + tables +
+                ", nombrePersonnes=" + nombrePersonnes +
+                ", tables='" + tables + '\'' +
                 ", dateReservation=" + dateReservation +
                 '}';
     }

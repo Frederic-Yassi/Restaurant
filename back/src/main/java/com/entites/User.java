@@ -17,11 +17,6 @@ public class User {
         this.role=role ;
     }
 
-    public User(String pseudo, String password) {
-        this.pseudo = pseudo;
-        this.motdepasse = password;
-    }
-
     public User() {
 
     }

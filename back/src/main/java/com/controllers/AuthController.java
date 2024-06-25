@@ -48,6 +48,7 @@ public class AuthController {
 
                     if(user!= null){
                         //user exist
+                        logger.info("This user already exist ");
                         response = new ResponseAuth(userDTO.getUsername(), "ERROR");
                         responseJson = objectMapper.writeValueAsString(response);
 
@@ -63,6 +64,8 @@ public class AuthController {
                         userService.insertUser(
                                 new User(userDTO.getUsername(), passwordService.hashpw(userDTO.getPassword(), BCrypt.gensalt()) , userDTO.getSurname(),userDTO.getName(), EnumRole.ADMIN.getRole() )
                                 );
+
+                        logger.info("user created ");
                         response = new ResponseAuth(userDTO.getUsername(), "OK" );
                         responseJson = objectMapper.writeValueAsString(response);
 
@@ -111,12 +114,12 @@ public class AuthController {
 
                     if(user!= null && passwordService.checkpw(userDTO.getPassword(), user.getPassword())){
                         response = new ResponseAuth(userDTO.getUsername(), "Bearer " + JwtUtil.generateToken(userDTO.getUsername()));
-                        logger.info("User created");
+                        logger.info("User authenticated");
                     }
                     else {
-                        //user exist
+                        //user don't exist
                         response = new ResponseAuth(userDTO.getUsername(), "" );
-                        logger.info("An user exist with the same username");
+                        logger.info("Authentication failed ");
                     }
                     responseJson = objectMapper.writeValueAsString(response);
 
